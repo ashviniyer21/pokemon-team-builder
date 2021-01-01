@@ -7,12 +7,23 @@
 </head>
 <body>
     <h1>Pokemon Team Builder</h1>
+    <p>For alola or galarian forms, add -alola or -galar to the end of the name</p>
+    <p id = "number">Number of Pokemon: 0</p>
+    <br>
     <p id = "text"></p>
     <br>
     <input list="list" id="input">
     <datalist id="list">
     </datalist>
     <button id="add" onclick="addPokemon()">Add Pokemon</button>
-    <script src = "javascript/add_pokemon.js"></script>
+    <button id="delete" onclick="deletePokemon()">Delete Pokemon</button>
+    <h2>All types on team</h2>
+    <p id = "types"></p>
+    <h2>All Weaknesses on team</h2>
+    <h3>Covered Weaknesses</h3>
+    <p id = "weakness1"></p>
+    <h3>Uncovered Weaknesses</h3>
+    <p id = "weakness2"></p>
+    <script src = "javascript/edit_pokemon.js"></script>
 </body>
 </html>
