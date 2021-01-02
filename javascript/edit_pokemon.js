@@ -12,11 +12,9 @@ for(var i = 1; i <= 898; i++){
         var mon = document.createElement("option");
         mon.textContent = data.name;
         mon.value = data.name;
-        console.log(data.name);
         select.append(mon);
     });
 }
-
 function addPokemon(){
     let string = "https://pokeapi.co/api/v2/pokemon/" + input.value
     $.getJSON(string, function (data){
@@ -84,6 +82,7 @@ function updateWeaknesses(){
                 tempTypes.push(tempMonText2[k]);
             }
             if(isWeak(listOfTypes[i], tempTypes)){
+                console.log(listOfTypes[i]);
                 let tempArray = [listOfTypes[i]]
                 let isCovered = false;
                 for(let k = 0; k < tempTypeText.length; k++){
@@ -116,20 +115,30 @@ function updateWeaknesses(){
 
 //TODO: Fix this function
 function isWeak(attackingType, pokemonTypes){
-    let string = "https://pokeapi.co/api/v2/type/" + attackingType
-    $.getJSON(string, function (data){
-        let mult = 1;
+    let typeData;
+    $.ajax({
+        url: 'json/typechart.json',
+        async: false,
+        dataType: 'json',
+        success: function (data) {
+            for(let i = 0; i < data.length; i++){
+                if(data[i].name === attackingType){
+                    typeData = data[i];
+                }
+            }
+        }
+    });
+    let mult = 1;
+    if(typeData != null){
         for(let i = 0; i < pokemonTypes.length; i++){
-            if(data.damage_relations.double_damage_from.includes(pokemonTypes[i])){
+            if(typeData.strengths.includes(pokemonTypes[i])){
                 mult *= 2;
-            } else if(data.damage_relations.half_damage_from.includes(pokemonTypes[i])){
-                mult /= 2;
-            } else if(data.damage_relations.no_damage_from.includes(pokemonTypes[i])){
+            } else if(typeData.weaknesses.includes(pokemonTypes[i])){
+                mult *= 0.5;
+            } else if(typeData.immunes.includes(pokemonTypes[i])){
                 mult = 0;
             }
         }
-        console.log(mult);
-        return mult > 1;
-    });
-    return false;
+    }
+    return mult > 1;
 }
