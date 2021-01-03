@@ -1,0 +1,74 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: black;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+h1{
+    font-size: 4vw;
+    line-height: 0;
+    letter-spacing: 0.25em;
+    text-shadow: 3px 3px red;
+}
+
+h2{
+    font-size: 24px;
+
+    line-height: 1.5;
+    color: white;
+    letter-spacing: 0.25em;
+}
+
+h3{
+    font-size: 28px;
+    line-height: 0;
+}
+
+input {
+    font-size: 24px;
+    border: 0;
+    background: none;
+    margin: 1em auto;
+    text-align: center;
+    border: 5px solid #00ffff;
+    padding: 0.5em 0.5em;
+    border-radius: 25px;
+    width: 20%;
+    outline: none;
+    color: white;
+    transition: 0.25s;
+}
+
+input:focus{
+    width: 30%;
+    border-color: #2ecc71;
+
+}
+
+datalist{
+    text-align: center;
+}
+
+button{
+
+    border: 0;
+    font-size: 28px;
+    background: none;
+    background-color: transparent;
+    display: block;
+    margin: 1em auto;
+    text-align: center;
+    border: 5px solid #2ecc71;
+    padding: 0.5em 2em;
+    outline: none;
+    color: white;
+    border-radius: 25px;
+    transition: 0.25s;
+    cursor: pointer;
+}
+
+button:hover{
+    background: #2ecc71;
+}

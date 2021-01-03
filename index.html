@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>Pokemon Team Builder</title>
@@ -12,17 +13,19 @@
     <br>
     <p id = "text"></p>
     <br>
-    <input list="list" id="input">
-    <datalist id="list">
+    <label for="input"></label><input list="list" id="input">
+    <datalist id="list" style="">
     </datalist>
+    <br>
     <button id="add" onclick="addPokemon()">Add Pokemon</button>
+    <br>
     <button id="delete" onclick="deletePokemon()">Delete Pokemon</button>
     <h2>All types on team</h2>
     <p id = "types"></p>
     <h2>All Weaknesses on team</h2>
-    <h3>Covered Weaknesses</h3>
+    <h3 style="color:green;">Covered Weaknesses</h3>
     <p id = "weakness1"></p>
-    <h3>Uncovered Weaknesses</h3>
+    <h3 style="color:red;">Uncovered Weaknesses</h3>
     <p id = "weakness2"></p>
     <script src = "javascript/edit_pokemon.js"></script>
 </body>
