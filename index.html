@@ -9,12 +9,16 @@
 <body>
     <h1>Pokemon Team Builder</h1>
     <p>For alola or galarian forms, add -alola or -galar to the end of the name</p>
+    <h3>Region</h3>
+    <label for="regioninput"></label><input list="regionlist" id="regioninput">
+    <datalist id="regionlist" style="">
+    </datalist>
     <p id = "number">Number of Pokemon: 0</p>
     <br>
     <p id = "text"></p>
     <br>
-    <label for="input"></label><input list="list" id="input">
-    <datalist id="list" style="">
+    <label for="moninput"></label><input list="monlist" id="moninput">
+    <datalist id="monlist" style="">
     </datalist>
     <br>
     <button id="add" onclick="addPokemon()">Add Pokemon</button>

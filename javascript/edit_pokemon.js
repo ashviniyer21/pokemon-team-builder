@@ -1,13 +1,27 @@
-var select = document.getElementById("list");
-var input = document.getElementById("input");
+var select = document.getElementById("monlist");
+var input = document.getElementById("moninput");
+var regionSelect  = document.getElementById("regionlist");
+var regionInput = document.getElementById("regioninput");
 var text = document.getElementById("text");
 var numberText = document.getElementById("number");
 var typesText = document.getElementById("types");
 var weaknesses1Text = document.getElementById("weakness1");
 var weaknesses2Text = document.getElementById("weakness2");
 
+for(var j = 1; j <= 34; j++){
+    let string = "https://pokeapi.co/api/v2/version/" + j.toString();
+    if(j !== 19 && j !== 20){
+        $.getJSON(string, function (data) {
+           var region = document.createElement("option");
+           region.textContent = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+           region.value = data.name.charAt(0).toUpperCase() + data.name.slice(1);
+           regionSelect.append(region);
+        });
+    }
+}
+
 for(var i = 1; i <= 898; i++){
-    var string = "https://pokeapi.co/api/v2/pokemon/" + i.toString();
+    let string = "https://pokeapi.co/api/v2/pokemon/" + i.toString();
     $.getJSON(string, function(data) {
         var mon = document.createElement("option");
         let textContent = "";
@@ -21,27 +35,81 @@ for(var i = 1; i <= 898; i++){
 }
 function addPokemon(){
     let string = "https://pokeapi.co/api/v2/pokemon/" + input.value.toLowerCase();
-    $.getJSON(string, function (data){
-        var numMons = parseInt(numberText.innerHTML.substring(numberText.innerHTML.length-1, numberText.innerHTML.length));
-        if(numMons !== 6){
-            numMons++;
-            moreTypes = Array()
-            for(let i = 0; i < data.types.length; i++){
-                moreTypes.push(data.types[i].type.name);
+    $.ajax({
+        url: string,
+        async: false,
+        dataType: 'json',
+        success: function (data) {
+            var numMons = parseInt(numberText.innerHTML.substring(numberText.innerHTML.length-1, numberText.innerHTML.length));
+            if(numMons !== 6){
+                numMons++;
+                moreTypes = Array()
+                for(let i = 0; i < data.types.length; i++){
+                    moreTypes.push(data.types[i].type.name);
+                }
+                let addition = "<br>" + input.value;
+                for(let i = 0; i < moreTypes.length; i++){
+                    addition += " " + moreTypes[i];
+                }
+                if(regionInput.value.length > 0){
+                    string = "https://pokeapi.co/api/v2/" + input.value.toLowerCase() + "/encounters";
+                }
+                console.log(addition);
+                numberText.innerHTML = "Number of Pokemon: " + numMons.toString();
+                text.innerHTML += addition;
+                updateTypes();
+                updateWeaknesses();
+                updateColors(text, true);
+                updateColors(typesText, false);
+                updateColors(weaknesses1Text, false);
+                updateColors(weaknesses2Text, false);
             }
-            var addition = "<br>" + input.value;
-            for(let i = 0; i < moreTypes.length; i++){
-                addition += " " + moreTypes[i];
+        }
+    });
+    string = "https://pokeapi.co/api/v2/pokemon-species/" + input.value.toLowerCase();
+    let pokemon = "";
+    $.ajax({
+        url: string,
+        async: false,
+        dataType: 'json',
+        success: function (data){
+            $.ajax({
+                url: data.evolution_chain.url,
+                async: false,
+                dataType: 'json',
+                success: function (data2){
+                    pokemon = data2.chain.species.name;
+                }
+            });
+        }
+    });
+    string = "https://pokeapi.co/api/v2/pokemon/" + pokemon + "/encounters";
+    $.ajax({
+        url: string,
+        async: false,
+        dataType: 'json',
+        success: function (data) {
+            let locations = Array();
+            for(let i = 0; i < data.length; i++){
+                console.log(data[i]);
+                for(let j = 0; j < data[i].version_details.length; j++){
+                    if(data[i].version_details[j].version.name === regionInput.value.toLowerCase()){
+                        $.ajax({
+                            url: data[i].location_area.url,
+                            async: false,
+                            dataType: 'json',
+                            success: function (data2) {
+                                locations.push(data2.location.name);
+                            }
+                        });
+                        break;
+                    }
+                }
             }
-            console.log(addition);
-            numberText.innerHTML = "Number of Pokemon: " + numMons.toString();
-            text.innerHTML += addition;
-            updateTypes();
-            updateWeaknesses();
-            updateColors(text, true);
-            updateColors(typesText, false);
-            updateColors(weaknesses1Text, false);
-            updateColors(weaknesses2Text, false);
+            locations = [...new Set(locations)];
+            for(let i = 0; i < locations.length; i++){
+                text.innerHTML += " " + locations[i];
+            }
         }
     });
 }
@@ -62,6 +130,7 @@ function deletePokemon(){
 }
 
 function updateTypes(){
+    let listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
     let types = Array()
     let tempText = text.innerText.split("\n");
     for(let i = 0; i < tempText.length; i++){
@@ -74,7 +143,9 @@ function updateTypes(){
     types = [...new Set(types)];
     let typesTextString = "";
     for(let i = 0; i < types.length; i++){
-        typesTextString += types[i] + "<br>";
+        if(listOfTypes.includes(types[i].toLowerCase())){
+            typesTextString += types[i] + "<br>";
+        }
     }
     typesText.innerHTML = typesTextString;
 }
@@ -85,7 +156,6 @@ function updateWeaknesses(){
     let weakness1 = Array();
     let weakness2 = Array();
     let listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
-
     for(let i = 0; i < listOfTypes.length; i++){
         for(let j = 0; j < tempMonText.length; j++){
             let tempMonText2 = tempMonText[j].split(" ");
@@ -125,7 +195,6 @@ function updateWeaknesses(){
     weaknesses2Text.innerHTML = weaknessString;
 }
 
-//TODO: Fix this function
 function isWeak(attackingType, pokemonTypes){
     let typeData;
     $.ajax({
