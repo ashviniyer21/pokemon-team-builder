@@ -7,7 +7,7 @@ var numberText = document.getElementById("number");
 var typesText = document.getElementById("types");
 var weaknesses1Text = document.getElementById("weakness1");
 var weaknesses2Text = document.getElementById("weakness2");
-
+var gen = 3;
 for(var j = 1; j <= 34; j++){
     let string = "https://pokeapi.co/api/v2/version/" + j.toString();
     if(j !== 19 && j !== 20){
@@ -34,6 +34,20 @@ for(var i = 1; i <= 898; i++){
     });
 }
 function addPokemon(){
+    let compareString = regionInput.value.toLowerCase();
+    if(compareString === "red" || compareString === "blue" || compareString === "yellow"){
+        gen = 1;
+    } else if(compareString === "gold" || compareString === "silver" || compareString === "crystal"
+        || compareString === "ruby" || compareString === "sapphire" || compareString === "emerald"
+        || compareString === "firered" || compareString === "leafgreen"
+        || compareString === "diamond" || compareString === "pearl" || compareString === "platinum"
+        || compareString === "heartgold" || compareString === "soulsilver"
+        || compareString === "black" || compareString === "white" || compareString === "black-2" || compareString === "white-2"
+    ){
+        gen = 2;
+    } else {
+        gen = 3;
+    }
     let string = "https://pokeapi.co/api/v2/pokemon/" + input.value.toLowerCase();
     $.ajax({
         url: string,
@@ -45,9 +59,22 @@ function addPokemon(){
                 numMons++;
                 moreTypes = Array()
                 for(let i = 0; i < data.types.length; i++){
-                    moreTypes.push(data.types[i].type.name);
+                    if(gen === 1){
+                      if(data.types[i].type.name !== "dark" && data.types[i].type.name !== "steel" && data.types[i].type.name !== "fairy"){
+                          moreTypes.push(data.types[i].type.name);
+                      }
+                    } else if(gen === 2){
+                        if(data.types[i].type.name !== "fairy"){
+                            moreTypes.push(data.types[i].type.name);
+                        }
+                    } else {
+                        moreTypes.push(data.types[i].type.name);
+                    }
                 }
                 let addition = "<br>" + input.value;
+                if(moreTypes.length === 0){
+                    moreTypes.push("normal");
+                }
                 for(let i = 0; i < moreTypes.length; i++){
                     addition += " " + moreTypes[i];
                 }
@@ -107,7 +134,7 @@ function addPokemon(){
                 }
             }
             locations = [...new Set(locations)];
-            for(let i = 0; i < locations.length; i++){
+            for(let i = 0; i < Math.min(1, locations.length); i++){
                 text.innerHTML += " " + locations[i];
             }
         }
@@ -156,6 +183,11 @@ function updateWeaknesses(){
     let weakness1 = Array();
     let weakness2 = Array();
     let listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
+    if(gen === 2){
+        listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel"];
+    } else if(gen === 1){
+        listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon"];
+    }
     for(let i = 0; i < listOfTypes.length; i++){
         for(let j = 0; j < tempMonText.length; j++){
             let tempMonText2 = tempMonText[j].split(" ");
