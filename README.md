@@ -1,2 +1,2 @@
 # pokemon-team-builder
-Builds pokemon teams to use on showdown
+Builds pokemon teams to use on playthroughs
