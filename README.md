@@ -1,4 +1,4 @@
-# pokemon-team-builder
+# (pokemon-team-builder)[https://ashviniyer21.github.io/pokemon-team-builder/]
 ## Helps build / plan a pokemon team for a playthrough
 - Covers all Pokemon gen 1-8
 - Supports all games gen 1-8
