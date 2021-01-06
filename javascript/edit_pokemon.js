@@ -7,6 +7,7 @@ var numberText = document.getElementById("number");
 var typesText = document.getElementById("types");
 var weaknesses1Text = document.getElementById("weakness1");
 var weaknesses2Text = document.getElementById("weakness2");
+var recTypes = document.getElementById("recommendations");
 var gen = 3;
 for(var j = 1; j <= 34; j++){
     let string = "https://pokeapi.co/api/v2/version/" + j.toString();
@@ -86,10 +87,12 @@ function addPokemon(){
                 text.innerHTML += addition;
                 updateTypes();
                 updateWeaknesses();
+                updateRecs();
                 updateColors(text, true);
                 updateColors(typesText, false);
                 updateColors(weaknesses1Text, false);
                 updateColors(weaknesses2Text, false);
+                updateColors(recTypes, false);
             }
         }
     });
@@ -154,6 +157,71 @@ function deletePokemon(){
         updateColors(weaknesses1Text, false);
         updateColors(weaknesses2Text, false);
     }
+}
+
+function updateRecs(){
+    let types = Array()
+    let currentTypes = typesText.innerText.split("\n");
+    let weaknesses = weaknesses2Text.innerText.split("\n");
+    let tempTypes = Array();
+    let listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
+    if(gen === 2){
+        listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel"];
+    } else if(gen === 1){
+        listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon"];
+    }
+    for(let i = 0; i < listOfTypes.length; i++){
+        if(!currentTypes.includes(listOfTypes[i].toUpperCase())){
+            if(weaknesses[0] !== ""){
+                for(let j = 0; j < weaknesses.length; j++){
+                    if(isWeak(listOfTypes[i], [weaknesses[j].toLowerCase()])){
+                        types.push(listOfTypes[i]);
+                        break;
+                    }
+                }
+            }
+        }
+        if(weaknesses[0] === ""){
+            console.log("I AM TRYING");
+            let good = true;
+            for(let j = 0; j < currentTypes.length; j++){
+                if(isWeak(currentTypes[j].toLowerCase(), [listOfTypes[i]])){
+                    good = false;
+                    break;
+                }
+            }
+            if(good){
+                tempTypes.push(listOfTypes[i]);
+            }
+        }
+        if((listOfTypes[i] === "water" || listOfTypes[i] === "flying") && !types.includes(listOfTypes[i]) && !currentTypes.includes(listOfTypes[i].toUpperCase())){
+            let tempString = regionInput.value.toLowerCase();
+            if(tempString !== "sun" && tempString !== "moon"
+                && tempString !== "ultra-sun" && tempString !== "ultra-moon"
+                && tempString !== "lets-go-pikachu" && tempString !== "lets-go-eevee"
+                && tempString !== "sword" && tempString !== "shield"
+            ){
+                types.push(listOfTypes[i]);
+            }
+        }
+    }
+    if(tempTypes.length > 0){
+        for(let i = 0; i < tempTypes.length; i++){
+            for(let j = 0; j < listOfTypes.length; j++){
+                if(!currentTypes.includes(listOfTypes[j].toUpperCase()) && isWeak(listOfTypes[j], [tempTypes[i]])){
+                    types.push(listOfTypes[j]);
+                }
+            }
+        }
+    }
+    types = [...new Set(types)];
+    let typesTextString = "";
+    for(let i = 0; i < types.length; i++){
+        if(listOfTypes.includes(types[i].toLowerCase())){
+            typesTextString += types[i] + "<br>";
+        }
+    }
+    recTypes.innerHTML = typesTextString;
 }
 
 function updateTypes(){
