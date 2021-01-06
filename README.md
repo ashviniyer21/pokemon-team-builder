@@ -5,10 +5,10 @@
 - Tells all types, covered, and uncovered weaknesses
    - Removes Fairy types for gen 2-5, and Dark and Steel for gen 1
 - Tells location to catch the first evolution of each pokemon
+- Reccomends pokemon types that compliment your current team
 
 ## Current bugs
 - May not find / not give the optimal location to catch the pokemon
 
 ## Future Improvements
 - Improve search speed
-- Add pokemon recomendations
