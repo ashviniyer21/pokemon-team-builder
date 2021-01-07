@@ -152,6 +152,7 @@ function deletePokemon(){
         text.innerHTML = text.innerHTML.substring(0, text.innerHTML.lastIndexOf("<br>"));
         updateTypes();
         updateWeaknesses();
+        updateRecs();
         updateColors(text, true);
         updateColors(typesText, false);
         updateColors(weaknesses1Text, false);
@@ -162,6 +163,10 @@ function deletePokemon(){
 function updateRecs(){
     let types = Array()
     let currentTypes = typesText.innerText.split("\n");
+    if(currentTypes[0] === ""){
+        recTypes.innerHTML = "";
+        return;
+    }
     let weaknesses = weaknesses2Text.innerText.split("\n");
     let tempTypes = Array();
     let listOfTypes = ["normal", "fire", "water", "grass", "electric", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
