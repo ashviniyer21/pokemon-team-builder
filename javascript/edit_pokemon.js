@@ -161,6 +161,7 @@ function deletePokemon(){
         updateColors(typesText, false);
         updateColors(weaknesses1Text, false);
         updateColors(weaknesses2Text, false);
+        updateColors(recTypes, false);
     }
 }
 
