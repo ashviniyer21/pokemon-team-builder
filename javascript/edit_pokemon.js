@@ -8,6 +8,7 @@ var typesText = document.getElementById("types");
 var weaknesses1Text = document.getElementById("weakness1");
 var weaknesses2Text = document.getElementById("weakness2");
 var recTypes = document.getElementById("recommendations");
+var showLocation = document.getElementById("showLocation");
 var gen = 3;
 for(var j = 1; j <= 34; j++){
     let string = "https://pokeapi.co/api/v2/version/" + j.toString();
@@ -96,6 +97,9 @@ function addPokemon(){
             }
         }
     });
+    if(!showLocation.checked){
+        return;
+    }
     string = "https://pokeapi.co/api/v2/pokemon-species/" + input.value.toLowerCase();
     let pokemon = "";
     $.ajax({

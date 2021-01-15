@@ -26,7 +26,7 @@ h3{
     line-height: 0;
 }
 
-input {
+input:not(#showLocation) {
     font-size: 24px;
     border: 0;
     background: none;
@@ -41,7 +41,7 @@ input {
     transition: 0.25s;
 }
 
-input:focus{
+input:focus:not(#showLocation){
     width: 30%;
     border-color: #2ecc71;
 
